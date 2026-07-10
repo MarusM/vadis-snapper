@@ -1,7 +1,11 @@
 import tkinter as tk
 
+from logger import log_info
+
 
 root = tk.Tk()
+
+log_info("Application started.")
 
 root.title("V.A.D.I.S. Snapper")
 root.geometry("420x220")
