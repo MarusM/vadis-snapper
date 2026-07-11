@@ -1,16 +1,30 @@
+# ============================================================
+# V.A.D.I.S. Snapper
+#
+# Module:
+# gui.py
+#
+# Responsibility:
+# Creates and manages the graphical user interface.
+#
+# ============================================================
+
 import tkinter as tk
 
 from logger import log_info
-from capture import get_active_window_title
+from screenshot import capture_screen
 
 
 def on_snap(status_label):
 
     status_label.config(text="Capturing...")
 
-    title = get_active_window_title()
+    image = capture_screen()
 
-    log_info(f'Active window: "{title}"')
+    if image is not None:
+        log_info("Screenshot successfully created.")
+    else:
+        log_info("Screenshot creation failed.")
 
     status_label.after(
         500,
@@ -27,6 +41,8 @@ def run_gui():
     root.minsize(420, 220)
 
     # --------------------------------------------------------
+    # Title
+    # --------------------------------------------------------
 
     title = tk.Label(
         root,
@@ -36,6 +52,8 @@ def run_gui():
 
     title.pack(pady=(20, 15))
 
+    # --------------------------------------------------------
+    # Snap Button
     # --------------------------------------------------------
 
     status = tk.Label(
@@ -54,6 +72,13 @@ def run_gui():
 
     snap_button.pack()
 
-    status.pack(side="bottom", pady=15)
+    # --------------------------------------------------------
+    # Status
+    # --------------------------------------------------------
+
+    status.pack(
+        side="bottom",
+        pady=15
+    )
 
     root.mainloop()
