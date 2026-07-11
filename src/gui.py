@@ -19,15 +19,22 @@ def on_snap(status_label):
 
     status_label.config(text="Capturing...")
 
-    image = capture_screen()
+    try:
 
-    if image is not None:
-        log_info("Screenshot successfully created.")
-    else:
-        log_info("Screenshot creation failed.")
+        filename = capture_screen()
+
+        log_info(f"Screenshot saved: {filename}")
+
+        status_label.config(text="Screenshot saved")
+
+    except Exception as error:
+
+        log_info(f"Screenshot failed: {error}")
+
+        status_label.config(text="Capture failed")
 
     status_label.after(
-        500,
+        1200,
         lambda: status_label.config(text="Ready")
     )
 
@@ -56,12 +63,6 @@ def run_gui():
     # Snap Button
     # --------------------------------------------------------
 
-    status = tk.Label(
-        root,
-        text="Ready",
-        fg="gray"
-    )
-
     snap_button = tk.Button(
         root,
         text="SNAP",
@@ -75,6 +76,12 @@ def run_gui():
     # --------------------------------------------------------
     # Status
     # --------------------------------------------------------
+
+    status = tk.Label(
+        root,
+        text="Ready",
+        fg="gray"
+    )
 
     status.pack(
         side="bottom",
