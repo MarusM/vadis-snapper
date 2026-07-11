@@ -1,13 +1,16 @@
 import tkinter as tk
 
 from logger import log_info
+from capture import get_active_window_title
 
 
 def on_snap(status_label):
 
-    log_info("Snap button pressed.")
-
     status_label.config(text="Capturing...")
+
+    title = get_active_window_title()
+
+    log_info(f'Active window: "{title}"')
 
     status_label.after(
         500,
