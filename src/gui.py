@@ -16,6 +16,7 @@ from capture import capture
 from filesystem import open_screenshot_folder
 from session import SESSION_ID
 from version import APPLICATION_NAME, BUILD
+from language import tr
 
 
 def on_snap(status_label, capture_mode):
@@ -23,14 +24,14 @@ def on_snap(status_label, capture_mode):
     mode = capture_mode.get()
 
     mode_names = {
-        "window": "Active Window",
-        "monitor": "Active Monitor",
-        "desktop": "Entire Desktop"
+        "window": tr("mode.window"),
+        "monitor": tr("mode.monitor"),
+        "desktop": tr("mode.desktop")
     }
 
     log_info(f"Capture mode: {mode_names[mode]}")
 
-    status_label.config(text="Status  : Capturing...")
+    status_label.config(text=tr("status.capturing"))
 
     try:
 
@@ -38,17 +39,17 @@ def on_snap(status_label, capture_mode):
 
         log_info(f"Screenshot saved: {filename}")
 
-        status_label.config(text="Status  : Screenshot saved")
+        status_label.config(text=tr("status.saved"))
 
     except Exception as error:
 
         log_error(f"Screenshot failed: {error}")
 
-        status_label.config(text="Status  : Capture failed")
+        status_label.config(text=tr("status.failed"))
 
     status_label.after(
         1200,
-        lambda: status_label.config(text="Status  : Ready")
+        lambda: status_label.config(text=tr("status.ready"))
     )
 
 
@@ -89,7 +90,7 @@ def run_gui():
 
     snap_button = tk.Button(
         root,
-        text="SNAP",
+        text=tr("button.snap"),
         width=22,
         height=2,
         command=lambda: on_snap(status_value, capture_mode)
@@ -103,7 +104,7 @@ def run_gui():
 
     mode_frame = tk.LabelFrame(
         root,
-        text="Capture Mode",
+        text=tr("group.capture"),
         padx=12,
         pady=8
     )
@@ -115,21 +116,21 @@ def run_gui():
 
     tk.Radiobutton(
         mode_frame,
-        text="Active Window",
+        text=tr("mode.window"),
         variable=capture_mode,
         value="window"
     ).pack(anchor="w")
 
     tk.Radiobutton(
         mode_frame,
-        text="Active Monitor",
+        text=tr("mode.monitor"),
         variable=capture_mode,
         value="monitor"
     ).pack(anchor="w")
 
     tk.Radiobutton(
         mode_frame,
-        text="Entire Desktop",
+        text=tr("mode.desktop"),
         variable=capture_mode,
         value="desktop"
     ).pack(anchor="w")
@@ -140,7 +141,7 @@ def run_gui():
 
     folder_button = tk.Button(
         root,
-        text="Open Screenshot Folder",
+        text=tr("button.folder"),
         width=22,
         command=on_open_folder
     )
@@ -164,7 +165,7 @@ def run_gui():
 
     status_value = tk.Label(
         footer,
-        text="Status  : Ready",
+        text=tr("status.ready"),
         anchor="w"
     )
 
