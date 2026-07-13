@@ -1,0 +1,254 @@
+# ==========================================================
+# V.A.D.I.S. Blueprint Notes
+# ==========================================================
+
+## Purpose
+
+This document captures architectural decisions,
+development principles and observations that emerge
+during the implementation of V.A.D.I.S. software.
+
+It is intentionally informal.
+
+It explains **WHY** decisions were made,
+not **HOW** they were implemented.
+
+The goal is to preserve knowledge that will later
+become part of the official V.A.D.I.S. Blueprint.
+
+
+---
+
+# Blueprint Note 000001
+
+## Topic
+
+Session Management
+
+### Observation
+
+Daily log files combine multiple application runs.
+
+### Decision
+
+Every application run receives its own unique Session ID.
+
+### Result
+
+Each program session produces exactly one log file.
+
+### Future
+
+The Session ID will later connect:
+
+- Log files
+- Screenshots
+- Diagnostics
+- Footer
+- Crash Reports
+- Export files
+
+### Reason
+
+Every artefact produced during one execution of the
+program should always be traceable to exactly one session.
+
+
+---
+
+# Blueprint Note 000002
+
+## Topic
+
+Developer Footer
+
+### Observation
+
+Important diagnostic information should be visible
+without opening log files.
+
+### Decision
+
+Every V.A.D.I.S. application provides a small
+developer footer.
+
+### Current Information
+
+- Status
+- Session ID
+- Build Number
+
+### Planned Extensions
+
+- Version
+- Git Revision
+- Python Version
+- Diagnostics Level
+- Capture Mode
+
+### Reason
+
+A single screenshot should already provide sufficient
+information to identify the executed software build.
+
+
+---
+
+# Blueprint Note 000003
+
+## Topic
+
+Commit Strategy
+
+### Decision
+
+**One Commit = One Idea**
+
+### Reason
+
+Every commit should describe one complete and
+understandable architectural or functional step.
+
+This creates a readable project history and
+simplifies maintenance.
+
+
+---
+
+# Blueprint Note 000004
+
+## Topic
+
+Module Responsibility
+
+### Decision
+
+Each module owns exactly one responsibility.
+
+### Examples
+
+logger.py
+
+- writes log entries
+
+session.py
+
+- creates the Session ID
+
+version.py
+
+- provides application information
+
+gui.py
+
+- creates the graphical user interface
+
+filesystem.py
+
+- file system operations
+
+capture.py
+
+- communication with Windows APIs
+
+screenshot.py
+
+- screenshot creation
+
+### Reason
+
+Small modules are easier to understand,
+test and reuse.
+
+
+---
+
+# Blueprint Note 000005
+
+## Topic
+
+Evidence before Assumption
+
+### Observation
+
+During development, assumptions can easily be mistaken
+for facts.
+
+### Decision
+
+Observations must always be verified before they
+become implementation decisions.
+
+### Reason
+
+Software should be improved based on evidence,
+not assumptions.
+
+This principle also reflects the philosophy
+behind GeoRecon.
+
+
+---
+
+# Blueprint Note 000006
+
+## Topic
+
+Architecture before Features
+
+### Decision
+
+Invest early in a stable architecture.
+
+Features are added afterwards.
+
+### Reason
+
+A solid foundation reduces future complexity,
+improves maintainability and allows new projects
+to start from a proven structure.
+
+
+---
+
+# Blueprint Note 000007
+
+## Topic
+
+Internationalization
+
+### Observation
+
+Language support is an architectural concern,
+not an optional feature.
+
+### Decision
+
+Future V.A.D.I.S. applications should avoid
+hard-coded user interface text.
+
+### Future
+
+A dedicated language module will become part
+of the standard project structure.
+
+### Reason
+
+Localization should be prepared from the
+beginning rather than retrofitted later.
+
+
+---
+
+# Personal Observation
+
+The V.A.D.I.S. Blueprint is not written first.
+
+It emerges from practical development.
+
+Every solved problem,
+every successful refactoring,
+every architectural decision
+becomes part of the Blueprint.
+
+The Blueprint is therefore a living document.

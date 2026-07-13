@@ -14,6 +14,8 @@ import tkinter as tk
 from logger import log_info, log_error
 from screenshot import capture_screen
 from filesystem import open_screenshot_folder
+from session import SESSION_ID
+from version import APPLICATION_NAME, BUILD
 
 
 def on_snap(status_label):
@@ -49,9 +51,9 @@ def run_gui():
 
     root = tk.Tk()
 
-    root.title("V.A.D.I.S. Snapper")
-    root.geometry("420x290")
-    root.minsize(420, 290)
+    root.title(APPLICATION_NAME)
+    root.geometry("430x340")
+    root.minsize(430, 340)
 
     # --------------------------------------------------------
     # Title
@@ -59,14 +61,14 @@ def run_gui():
 
     title = tk.Label(
         root,
-        text="V.A.D.I.S. Snapper",
+        text=APPLICATION_NAME,
         font=("Segoe UI", 16, "bold")
     )
 
     title.pack(pady=(20, 15))
 
     # --------------------------------------------------------
-    # Snap
+    # SNAP
     # --------------------------------------------------------
 
     snap_button = tk.Button(
@@ -74,13 +76,13 @@ def run_gui():
         text="SNAP",
         width=22,
         height=2,
-        command=lambda: on_snap(status)
+        command=lambda: on_snap(status_value)
     )
 
     snap_button.pack(pady=(0, 10))
 
     # --------------------------------------------------------
-    # Open Folder
+    # Folder
     # --------------------------------------------------------
 
     folder_button = tk.Button(
@@ -93,20 +95,55 @@ def run_gui():
     folder_button.pack()
 
     # --------------------------------------------------------
-    # Status
+    # Footer
     # --------------------------------------------------------
 
-    status = tk.Label(
+    footer = tk.Frame(
         root,
-        text="Ready",
-        fg="gray"
+        bd=1,
+        relief="sunken"
     )
 
-    status.pack(
+    footer.pack(
         side="bottom",
-        pady=15
+        fill="x"
     )
 
-    
+    status_value = tk.Label(
+        footer,
+        text="Status : Ready",
+        anchor="w"
+    )
+
+    status_value.pack(
+        anchor="w",
+        padx=8,
+        pady=(6, 0)
+    )
+
+    session_value = tk.Label(
+        footer,
+        text=f"Session: {SESSION_ID}",
+        anchor="w",
+        font=("Consolas", 9)
+    )
+
+    session_value.pack(
+        anchor="w",
+        padx=8
+    )
+
+    build_value = tk.Label(
+        footer,
+        text=f"Build  : {BUILD}",
+        anchor="w",
+        font=("Consolas", 9)
+    )
+
+    build_value.pack(
+        anchor="w",
+        padx=8,
+        pady=(0, 6)
+    )
 
     root.mainloop()
