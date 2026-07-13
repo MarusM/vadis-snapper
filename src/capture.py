@@ -5,32 +5,39 @@
 # capture.py
 #
 # Responsibility:
-# Communicates with the operating system.
-# Retrieves information about the active window.
+# Capture backend.
+#
+# Public API:
+#
+# capture(mode)
 #
 # ============================================================
 
-import ctypes
+from logger import log_info
+from screenshot import capture_screen
 
 
-def get_active_window_title() -> str:
+def capture(mode: str):
 
-    user32 = ctypes.windll.user32
+    if mode == "monitor":
+        return capture_primary_monitor()
 
-    hwnd = user32.GetForegroundWindow()
+    elif mode == "window":
+        log_info("Active Window capture not implemented yet.")
+        log_info("Using Primary Monitor instead.")
+        return capture_primary_monitor()
 
-    if hwnd == 0:
-        return "No active window"
+    elif mode == "desktop":
+        log_info("Entire Desktop capture not implemented yet.")
+        log_info("Using Primary Monitor instead.")
+        return capture_primary_monitor()
 
-    length = user32.GetWindowTextLengthW(hwnd)
+    else:
+        log_info("Unknown capture mode.")
+        log_info("Using Primary Monitor instead.")
+        return capture_primary_monitor()
 
-    buffer = ctypes.create_unicode_buffer(length + 1)
 
-    user32.GetWindowTextW(hwnd, buffer, length + 1)
+def capture_primary_monitor():
 
-    title = buffer.value.strip()
-
-    if title == "":
-        return "Untitled window"
-
-    return title
+    return capture_screen()

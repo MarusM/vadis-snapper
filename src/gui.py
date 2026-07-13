@@ -12,33 +12,43 @@
 import tkinter as tk
 
 from logger import log_info, log_error
-from screenshot import capture_screen
+from capture import capture
 from filesystem import open_screenshot_folder
 from session import SESSION_ID
 from version import APPLICATION_NAME, BUILD
 
 
-def on_snap(status_label):
+def on_snap(status_label, capture_mode):
 
-    status_label.config(text="Capturing...")
+    mode = capture_mode.get()
+
+    mode_names = {
+        "window": "Active Window",
+        "monitor": "Active Monitor",
+        "desktop": "Entire Desktop"
+    }
+
+    log_info(f"Capture mode: {mode_names[mode]}")
+
+    status_label.config(text="Status  : Capturing...")
 
     try:
 
-        filename = capture_screen()
+        filename = capture(mode)
 
         log_info(f"Screenshot saved: {filename}")
 
-        status_label.config(text="Screenshot saved")
+        status_label.config(text="Status  : Screenshot saved")
 
     except Exception as error:
 
         log_error(f"Screenshot failed: {error}")
 
-        status_label.config(text="Capture failed")
+        status_label.config(text="Status  : Capture failed")
 
     status_label.after(
         1200,
-        lambda: status_label.config(text="Ready")
+        lambda: status_label.config(text="Status  : Ready")
     )
 
 
@@ -52,8 +62,8 @@ def run_gui():
     root = tk.Tk()
 
     root.title(APPLICATION_NAME)
-    root.geometry("430x340")
-    root.minsize(430, 340)
+    root.geometry("430x430")
+    root.minsize(430, 430)
 
     # --------------------------------------------------------
     # Title
@@ -68,6 +78,12 @@ def run_gui():
     title.pack(pady=(20, 15))
 
     # --------------------------------------------------------
+    # Capture Mode
+    # --------------------------------------------------------
+
+    capture_mode = tk.StringVar(value="monitor")
+
+    # --------------------------------------------------------
     # SNAP
     # --------------------------------------------------------
 
@@ -76,13 +92,50 @@ def run_gui():
         text="SNAP",
         width=22,
         height=2,
-        command=lambda: on_snap(status_value)
+        command=lambda: on_snap(status_value, capture_mode)
     )
 
-    snap_button.pack(pady=(0, 10))
+    snap_button.pack(pady=(0, 15))
 
     # --------------------------------------------------------
-    # Folder
+    # Capture Mode
+    # --------------------------------------------------------
+
+    mode_frame = tk.LabelFrame(
+        root,
+        text="Capture Mode",
+        padx=12,
+        pady=8
+    )
+
+    mode_frame.pack(
+        padx=20,
+        fill="x"
+    )
+
+    tk.Radiobutton(
+        mode_frame,
+        text="Active Window",
+        variable=capture_mode,
+        value="window"
+    ).pack(anchor="w")
+
+    tk.Radiobutton(
+        mode_frame,
+        text="Active Monitor",
+        variable=capture_mode,
+        value="monitor"
+    ).pack(anchor="w")
+
+    tk.Radiobutton(
+        mode_frame,
+        text="Entire Desktop",
+        variable=capture_mode,
+        value="desktop"
+    ).pack(anchor="w")
+
+    # --------------------------------------------------------
+    # Folder Button
     # --------------------------------------------------------
 
     folder_button = tk.Button(
@@ -92,7 +145,7 @@ def run_gui():
         command=on_open_folder
     )
 
-    folder_button.pack()
+    folder_button.pack(pady=15)
 
     # --------------------------------------------------------
     # Footer
@@ -111,7 +164,7 @@ def run_gui():
 
     status_value = tk.Label(
         footer,
-        text="Status : Ready",
+        text="Status  : Ready",
         anchor="w"
     )
 
@@ -123,7 +176,7 @@ def run_gui():
 
     session_value = tk.Label(
         footer,
-        text=f"Session: {SESSION_ID}",
+        text=f"Session : {SESSION_ID}",
         anchor="w",
         font=("Consolas", 9)
     )
@@ -135,7 +188,7 @@ def run_gui():
 
     build_value = tk.Label(
         footer,
-        text=f"Build  : {BUILD}",
+        text=f"Build   : {BUILD}",
         anchor="w",
         font=("Consolas", 9)
     )
