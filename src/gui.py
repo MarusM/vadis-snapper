@@ -11,7 +11,7 @@
 
 import tkinter as tk
 
-from logger import log_info
+from logger import log_info, log_error
 from screenshot import capture_screen
 from filesystem import open_screenshot_folder
 
@@ -30,7 +30,7 @@ def on_snap(status_label):
 
     except Exception as error:
 
-        log_info(f"Screenshot failed: {error}")
+        log_error(f"Screenshot failed: {error}")
 
         status_label.config(text="Capture failed")
 
@@ -41,8 +41,6 @@ def on_snap(status_label):
 
 
 def on_open_folder():
-
-    log_info("Opening screenshot folder.")
 
     open_screenshot_folder()
 
@@ -104,6 +102,11 @@ def run_gui():
         fg="gray"
     )
 
-    status.pack(side="bottom", pady=15)
+    status.pack(
+        side="bottom",
+        pady=15
+    )
+
+    
 
     root.mainloop()

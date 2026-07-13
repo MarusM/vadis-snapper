@@ -1,35 +1,48 @@
+# ============================================================
+# V.A.D.I.S. Snapper
+#
+# Module:
+# logger.py
+#
+# Responsibility:
+# Writes application log messages.
+#
+# ============================================================
+
 from datetime import datetime
 from pathlib import Path
 
-# ============================================================
-# V.A.D.I.S. Logger
-# Version 1.0
-# ============================================================
+from session import SESSION_ID
+
 
 LOG_FOLDER = Path("logs")
 LOG_FOLDER.mkdir(exist_ok=True)
 
 
-def _write(level: str, message: str) -> None:
-    """
-    Internal log writer.
-    """
+LOGFILE = LOG_FOLDER / f"{SESSION_ID}.log"
 
-    logfile = LOG_FOLDER / f"{datetime.now():%Y-%m-%d}.log"
+
+def _write(level: str, message: str):
 
     timestamp = datetime.now().strftime("%H:%M:%S")
 
-    with logfile.open("a", encoding="utf-8") as file:
-        file.write(f"[{timestamp}] {level:<7} {message}\n")
+    with LOGFILE.open("a", encoding="utf-8") as file:
+
+        file.write(
+            f"[{timestamp}] {level:<7} {message}\n"
+        )
 
 
-def log_info(message: str) -> None:
+def log_info(message: str):
+
     _write("INFO", message)
 
 
-def log_warning(message: str) -> None:
+def log_warning(message: str):
+
     _write("WARNING", message)
 
 
-def log_error(message: str) -> None:
+def log_error(message: str):
+
     _write("ERROR", message)
