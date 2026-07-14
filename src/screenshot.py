@@ -20,6 +20,8 @@ from pathlib import Path
 
 from PIL import ImageGrab
 
+from logger import log_info
+
 
 SCREENSHOT_FOLDER = Path("screenshots")
 SCREENSHOT_FOLDER.mkdir(exist_ok=True)
@@ -32,6 +34,21 @@ def _create_filename() -> Path:
     return SCREENSHOT_FOLDER / filename
 
 
+def _save_image(image) -> str:
+    """
+    Stores the image and logs metadata.
+    """
+
+    filepath = _create_filename()
+
+    image.save(filepath)
+
+    log_info(f"Screenshot saved: {filepath}")
+    log_info(f"Image size: {image.width} x {image.height}")
+
+    return str(filepath)
+
+
 def capture_primary_monitor() -> str:
     """
     Captures the primary monitor.
@@ -39,11 +56,7 @@ def capture_primary_monitor() -> str:
 
     image = ImageGrab.grab()
 
-    filepath = _create_filename()
-
-    image.save(filepath)
-
-    return str(filepath)
+    return _save_image(image)
 
 
 def capture_region(
@@ -65,11 +78,7 @@ def capture_region(
         )
     )
 
-    filepath = _create_filename()
-
-    image.save(filepath)
-
-    return str(filepath)
+    return _save_image(image)
 
 
 def capture_entire_desktop() -> str:
@@ -79,8 +88,4 @@ def capture_entire_desktop() -> str:
 
     image = ImageGrab.grab(all_screens=True)
 
-    filepath = _create_filename()
-
-    image.save(filepath)
-
-    return str(filepath)
+    return _save_image(image)

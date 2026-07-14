@@ -45,7 +45,6 @@ def on_snap(status_label, capture_mode):
 
         filename = capture(mode)
 
-        log_info(f"Screenshot saved: {filename}")
 
         status_label.config(text=tr("status.saved"))
 
