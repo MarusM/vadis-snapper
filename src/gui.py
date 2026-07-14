@@ -18,6 +18,14 @@ from session import SESSION_ID
 from version import APPLICATION_NAME, BUILD
 from language import tr
 
+from config import (
+    WINDOW_WIDTH,
+    WINDOW_HEIGHT,
+    GUI_PADDING,
+    STATUS_RESET_DELAY_MS,
+    DEFAULT_CAPTURE_MODE,
+)
+
 
 def on_snap(status_label, capture_mode):
 
@@ -48,7 +56,7 @@ def on_snap(status_label, capture_mode):
         status_label.config(text=tr("status.failed"))
 
     status_label.after(
-        1200,
+        STATUS_RESET_DELAY_MS,
         lambda: status_label.config(text=tr("status.ready"))
     )
 
@@ -63,8 +71,13 @@ def run_gui():
     root = tk.Tk()
 
     root.title(APPLICATION_NAME)
-    root.geometry("430x430")
-    root.minsize(430, 430)
+
+    root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
+
+    root.minsize(
+        WINDOW_WIDTH,
+        WINDOW_HEIGHT
+    )
 
     # --------------------------------------------------------
     # Title
@@ -76,13 +89,17 @@ def run_gui():
         font=("Segoe UI", 16, "bold")
     )
 
-    title.pack(pady=(20, 15))
+    title.pack(
+        pady=(GUI_PADDING, 15)
+    )
 
     # --------------------------------------------------------
     # Capture Mode
     # --------------------------------------------------------
 
-    capture_mode = tk.StringVar(value="monitor")
+    capture_mode = tk.StringVar(
+        value=DEFAULT_CAPTURE_MODE
+    )
 
     # --------------------------------------------------------
     # SNAP
@@ -93,10 +110,15 @@ def run_gui():
         text=tr("button.snap"),
         width=22,
         height=2,
-        command=lambda: on_snap(status_value, capture_mode)
+        command=lambda: on_snap(
+            status_value,
+            capture_mode
+        )
     )
 
-    snap_button.pack(pady=(0, 15))
+    snap_button.pack(
+        pady=(0, 15)
+    )
 
     # --------------------------------------------------------
     # Capture Mode
@@ -110,7 +132,7 @@ def run_gui():
     )
 
     mode_frame.pack(
-        padx=20,
+        padx=GUI_PADDING,
         fill="x"
     )
 
@@ -146,7 +168,9 @@ def run_gui():
         command=on_open_folder
     )
 
-    folder_button.pack(pady=15)
+    folder_button.pack(
+        pady=15
+    )
 
     # --------------------------------------------------------
     # Footer
