@@ -14,7 +14,11 @@
 # ============================================================
 
 from logger import log_info
-from screenshot import capture_screen
+
+from screenshot import (
+    capture_primary_monitor,
+    capture_region,
+)
 
 
 def capture(mode: str):
@@ -36,8 +40,3 @@ def capture(mode: str):
         log_info("Unknown capture mode.")
         log_info("Using Primary Monitor instead.")
         return capture_primary_monitor()
-
-
-def capture_primary_monitor():
-
-    return capture_screen()
