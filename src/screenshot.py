@@ -11,6 +11,7 @@
 #
 # capture_primary_monitor()
 # capture_region(left, top, right, bottom)
+# capture_entire_desktop()
 #
 # ============================================================
 
@@ -63,6 +64,20 @@ def capture_region(
             bottom
         )
     )
+
+    filepath = _create_filename()
+
+    image.save(filepath)
+
+    return str(filepath)
+
+
+def capture_entire_desktop() -> str:
+    """
+    Captures all connected monitors as one image.
+    """
+
+    image = ImageGrab.grab(all_screens=True)
 
     filepath = _create_filename()
 
