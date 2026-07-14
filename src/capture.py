@@ -20,6 +20,8 @@ from screenshot import (
     capture_region,
 )
 
+from window import get_active_window_rect
+
 
 def capture(mode: str):
 
@@ -27,9 +29,7 @@ def capture(mode: str):
         return capture_primary_monitor()
 
     elif mode == "window":
-        log_info("Active Window capture not implemented yet.")
-        log_info("Using Primary Monitor instead.")
-        return capture_primary_monitor()
+        return capture_active_window()
 
     elif mode == "desktop":
         log_info("Entire Desktop capture not implemented yet.")
@@ -40,3 +40,15 @@ def capture(mode: str):
         log_info("Unknown capture mode.")
         log_info("Using Primary Monitor instead.")
         return capture_primary_monitor()
+
+
+def capture_active_window():
+
+    left, top, right, bottom = get_active_window_rect()
+
+    return capture_region(
+        left,
+        top,
+        right,
+        bottom
+    )
