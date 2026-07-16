@@ -21,7 +21,10 @@ from screenshot import (
     capture_entire_desktop,
 )
 
-from window import get_active_window_rect
+from window import (
+    get_active_window_rect,
+    get_active_window_title,
+)
 
 
 def capture(mode: str):
@@ -42,6 +45,10 @@ def capture(mode: str):
 
 
 def capture_active_window():
+
+    title = get_active_window_title()
+
+    log_info(f'Foreground Window: "{title}"')
 
     left, top, right, bottom = get_active_window_rect()
 

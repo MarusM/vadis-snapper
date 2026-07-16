@@ -10,6 +10,7 @@
 # Public API:
 #
 # get_active_window_rect()
+# get_active_window_title()
 #
 # ============================================================
 
@@ -17,18 +18,7 @@ import ctypes
 from ctypes import wintypes
 
 
-def get_active_window_rect():
-    """
-    Returns the rectangle of the currently
-    active foreground window.
-
-    Returns:
-        (left, top, right, bottom)
-
-    Raises:
-        RuntimeError
-            if no active window is available.
-    """
+def _get_foreground_window():
 
     user32 = ctypes.windll.user32
 
@@ -36,6 +26,13 @@ def get_active_window_rect():
 
     if hwnd == 0:
         raise RuntimeError("No active window found.")
+
+    return user32, hwnd
+
+
+def get_active_window_rect():
+
+    user32, hwnd = _get_foreground_window()
 
     rect = wintypes.RECT()
 
@@ -53,3 +50,25 @@ def get_active_window_rect():
         rect.right,
         rect.bottom
     )
+
+
+def get_active_window_title():
+
+    user32, hwnd = _get_foreground_window()
+
+    length = user32.GetWindowTextLengthW(hwnd)
+
+    buffer = ctypes.create_unicode_buffer(length + 1)
+
+    user32.GetWindowTextW(
+        hwnd,
+        buffer,
+        length + 1
+    )
+
+    title = buffer.value.strip()
+
+    if title == "":
+        return "<untitled>"
+
+    return title
